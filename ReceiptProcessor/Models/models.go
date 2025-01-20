@@ -5,7 +5,7 @@ type Receipt struct {
 	PurchaseDate string `json:"purchaseDate" validate:"required"`
 	PurchaseTime string `json:"purchaseTime" validate:"required"`
 	Total        string `json:"total" validate:"required"`
-	Items        []Item `json:"items" validate:"required"`
+	Items        []Item `json:"items" validate:"required,min=1"`
 }
 
 type Item struct {
