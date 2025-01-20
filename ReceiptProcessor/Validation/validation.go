@@ -3,7 +3,6 @@ package validation
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	model "receiptProcessor/Models"
 	"regexp"
 	"time"
@@ -63,7 +62,6 @@ func ValidateReceipt(c *gin.Context) (model.Receipt, error) {
 func validateField(field string, pattern string) error {
 	match, err := regexp.MatchString(pattern, field)
 	if err != nil {
-		fmt.Println(err.Error())
 		return err
 	}
 	if !match {
