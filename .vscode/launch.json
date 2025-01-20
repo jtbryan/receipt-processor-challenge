@@ -9,7 +9,7 @@
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "${workspaceFolder}/ReceiptProcessor/receiptWebService/receiptWebService.go",
+      "program": "${workspaceFolder}/ReceiptProcessor/ReceiptWebService/receiptWebService.go",
       "args": [],
       "env": {},
     }
