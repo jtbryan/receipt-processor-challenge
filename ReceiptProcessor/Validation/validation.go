@@ -6,6 +6,7 @@ import (
 	"fmt"
 	model "receiptProcessor/Models"
 	"regexp"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -13,6 +14,8 @@ import (
 
 const (
 	invalidReceiptError = "The receipt is invalid."
+	timeFormat          = "15:04"
+	dateFormat          = "2006-01-02"
 )
 
 func ValidateReceipt(c *gin.Context) (model.Receipt, error) {
@@ -35,21 +38,21 @@ func ValidateReceipt(c *gin.Context) (model.Receipt, error) {
 	if err := validateField(receipt.Retailer, `^[\w\s\-\&]+$`); err != nil {
 		return receipt, errors.New(invalidReceiptError)
 	}
-	if err := validateField(receipt.PurchaseDate, `^\d{4}-\d{2}-\d{2}$`); err != nil {
+	if _, err := time.Parse(dateFormat, receipt.PurchaseDate); err != nil {
 		return receipt, errors.New(invalidReceiptError)
 	}
-	if err := validateField(receipt.PurchaseTime, `^(?:[01]?[0-9]|2[0-3]):[0-5][0-9]$`); err != nil {
+	if _, err := time.Parse(timeFormat, receipt.PurchaseTime); err != nil {
 		return receipt, errors.New(invalidReceiptError)
 	}
-	if err := validateField(receipt.Total, `^\\d+\\.\\d{2}$`); err != nil {
+	if err := validateField(receipt.Total, `^\d+\.\d{2}$`); err != nil {
 		return receipt, errors.New(invalidReceiptError)
 	}
 
 	for _, item := range receipt.Items {
-		if err := validateField(item.Price, `^\\d+\\.\\d{2}$`); err != nil {
+		if err := validateField(item.Price, `^\d+\.\d{2}$`); err != nil {
 			return receipt, errors.New(invalidReceiptError)
 		}
-		if err := validateField(item.ShortDescription, `^[\\w\\s\\-]+$`); err != nil {
+		if err := validateField(item.ShortDescription, `^[\w\s\-]+$`); err != nil {
 			return receipt, errors.New(invalidReceiptError)
 		}
 	}
@@ -58,10 +61,13 @@ func ValidateReceipt(c *gin.Context) (model.Receipt, error) {
 }
 
 func validateField(field string, pattern string) error {
-	_, err := regexp.MatchString(pattern, field)
+	match, err := regexp.MatchString(pattern, field)
 	if err != nil {
 		fmt.Println(err.Error())
 		return err
+	}
+	if !match {
+		return errors.New(invalidReceiptError)
 	}
 	return nil
 }
