@@ -46,7 +46,7 @@ func startRouter() {
 	router.POST("/receipts/process", processReceipts)
 	router.GET("/receipts/:id/points", getPoints)
 
-	router.Run("localhost:9090")
+	router.Run("localhost:8080")
 }
 
 func main() {
