@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package token.v1;
+
+service TokenService {
+  // Server-side streaming RPC for receipts
+  rpc StreamToken (StreamTokenRequest) returns (stream StreamTokenResponse);
+}
+
+// Request for streaming receipts
+message StreamTokenRequest {
+  string message = 1;
+}
+
+// Response for streaming receipts
+message StreamTokenResponse {
+  string message = 1;
+}

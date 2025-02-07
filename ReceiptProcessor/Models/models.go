@@ -12,3 +12,7 @@ type Item struct {
 	ShortDescription string `json:"shortDescription" validate:"required"`
 	Price            string `json:"price" validate:"required"`
 }
+
+func (r *Receipt) SetRetailer(newRetailer string) {
+	r.Retailer = newRetailer
+}
